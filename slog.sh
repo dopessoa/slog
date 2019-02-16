@@ -3,7 +3,7 @@
 #
 # name: slog
 # function: A simple log writer lib for bash scripts.
-# version: 1.0 (2014-10-09)
+# version: 1.1 (2019-02-16)
 # created: Sep 09, 2014
 #
 
@@ -99,7 +99,7 @@ case $logLevel in
                  ;;
      WARN)       logLevelNum=2
                  ;;
-     ERRIR)      logLevelNum=1
+     ERROR)      logLevelNum=1
                  ;;
         * )      echo "LogLevel configuration is incorrect, please set one of DEBUG, INFO, WARN or ERROR."
                  exit 1
@@ -120,7 +120,7 @@ logDebug() {
   if [ $logLevelNum -ge 4 ]; then
     logCategory="DEBUG"
     lineNo=$(caller | cut -d ' ' -f1)
-    logOrigin=$(caller | awk '{print $2}' | awk -F '/' '{print $2}')
+    logOrigin=$(basename $(caller | cut -d ' ' -f2))
     writeLog $(eval "echo \"$logPattern\"")
   fi
 }
@@ -129,7 +129,7 @@ logInfo() {
   if [ $logLevelNum -ge 3 ]; then
     logCategory="INFO"
     lineNo=$(caller | cut -d ' ' -f1)
-    logOrigin=$(caller | awk '{print $2}' | awk -F '/' '{print $2}')
+    logOrigin=$(basename $(caller | cut -d ' ' -f2))
     writeLog $(eval "echo \"$logPattern\"")
   fi
 }
@@ -138,7 +138,7 @@ logWarn() {
   if [ $logLevelNum -ge 2 ]; then
     logCategory="WARN"
     lineNo=$(caller | cut -d ' ' -f1)
-    logOrigin=$(caller | awk '{print $2}' | awk -F '/' '{print $2}')
+    logOrigin=$(basename $(caller | cut -d ' ' -f2))
     writeLog $(eval "echo \"$logPattern\"")
   fi
 }
@@ -147,7 +147,7 @@ logError() {
   if [ $logLevelNum -ge 1 ]; then
     logCategory="ERROR"
     lineNo=$(caller | cut -d ' ' -f1)
-    logOrigin=$(caller | awk '{print $2}' | awk -F '/' '{print $2}')
+    logOrigin=$(basename $(caller | cut -d ' ' -f2))
     writeLog $(eval "echo \"$logPattern\"")
   fi
 }
